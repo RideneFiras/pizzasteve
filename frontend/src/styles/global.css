@@ -1,0 +1,22 @@
+/* global.css */
+
+/* Global background for all pages */
+.app-background {
+  background-image: url('../../public/images/pizza-bg.png'); /* Path to your background image */
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the background */
+  background-repeat: no-repeat; /* Avoid tiling */
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+}
+
+/* Universal body styling */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif; /* Set a default font */
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
