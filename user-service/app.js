@@ -39,7 +39,7 @@ const PORT = process.env.PORT || 5000;
 const registerWithDiscovery = async () => {
   try {
     await axios.post('http://localhost:4000/register', {
-      name: 'service1', // This is the service name the gateway will recognize
+      name: 'user', // This is the service name the gateway will recognize
       address: 'http://localhost',
       port: PORT,
     });

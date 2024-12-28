@@ -19,6 +19,7 @@ app.use(async (req, res, next) => {
         // Check which service is targeted
         if (req.path.startsWith('/service1')) {
             req.targetService = services.find(service => service.name === 'service1');
+            console.log(req.targetService)
         } else if (req.path.startsWith('/service2')) {
             req.targetService = services.find(service => service.name === 'service2');
         }
@@ -26,6 +27,7 @@ app.use(async (req, res, next) => {
         // If target service is found, set its URL
         if (req.targetService) {
             req.targetServiceUrl = `${req.targetService.address}:${req.targetService.port}`;
+            console.log( req.targetServiceUrl)
             next();
         } else {
             res.status(404).send({ message: 'Microservice introuvable' });
@@ -38,6 +40,7 @@ app.use(async (req, res, next) => {
 // Proxy requests to the target service
 app.use(async (req, res) => {
     try {
+        console.log(`${req.targetServiceUrl}${req.originalUrl.replace(/^\/service[1-2]/, '')}`)
         const response = await axios({
             method: req.method, // Preserve the HTTP method
             url: `${req.targetServiceUrl}${req.originalUrl.replace(/^\/service[1-2]/, '')}`,

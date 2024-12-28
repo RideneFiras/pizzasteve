@@ -1,10 +1,8 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
-
-dotenv.config();
+const axios = require('axios'); // Import axios for HTTP requests
 
 // MongoDB Connection
 connectDB();
@@ -23,6 +21,21 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Product-Service is working!' });
 });
 
-app.listen(PORT, () => {
+// Discovery Server details
+const DISCOVERY_SERVER_URL = 'http://localhost:4000/register';
+
+// Function to register the service with the Discovery Server
+const registerWithDiscovery = async (name, address, port) => {
+  try {
+    await axios.post(DISCOVERY_SERVER_URL, { name, address, port });
+    console.log(`${name} registered with Discovery Server successfully`);
+  } catch (error) {
+    console.error(`Failed to register ${name} with Discovery Server: ${error.message}`);
+  }
+};
+
+// Call registerWithDiscovery in app.listen
+app.listen(PORT, async () => {
   console.log(`Product Service running on port ${PORT}`);
+  await registerWithDiscovery('product-service', 'http://localhost', PORT);
 });
