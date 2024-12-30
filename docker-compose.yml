@@ -1,0 +1,141 @@
+version: '3.8'
+services:
+  # Discovery Server
+  discovery-server:
+    build:
+      context: ./discovery-server
+    ports:
+      - "8761:8761"
+
+  # User Service
+  user-service:
+    build:
+      context: ./user-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - user-service-db
+    ports:
+      - "5000:5000"
+  user-service-db:
+    image: mongo:5.0
+    container_name: user-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27018:27017"
+
+  # Product Service
+  product-service:
+    build:
+      context: ./product-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - product-service-db
+    ports:
+      - "5001:5001"
+  product-service-db:
+    image: mongo:5.0
+    container_name: product-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27019:27017"
+
+  # Cart Service
+  cart-service:
+    build:
+      context: ./cart-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - cart-service-db
+    ports:
+      - "5002:5002"
+  cart-service-db:
+    image: mongo:5.0
+    container_name: cart-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27020:27017"
+
+  # Inventory Service
+  inventory-service:
+    build:
+      context: ./inventory-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - inventory-service-db
+    ports:
+      - "5003:5003"
+  inventory-service-db:
+    image: mongo:5.0
+    container_name: inventory-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27021:27017"
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./notification-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - notification-service-db
+    ports:
+      - "5004:5004"
+  notification-service-db:
+    image: mongo:5.0
+    container_name: notification-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27022:27017"
+
+  # Order Service
+  order-service:
+    build:
+      context: ./order-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - order-service-db
+    ports:
+      - "5005:5005"
+  order-service-db:
+    image: mongo:5.0
+    container_name: order-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27023:27017"
+
+  # Payment Service
+  payement-service:
+    build:
+      context: ./payement-service
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - payement-service-db
+    ports:
+      - "5006:5006"
+  payement-service-db:
+    image: mongo:5.0
+    container_name: payement-service-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27024:27017"
