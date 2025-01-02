@@ -14,7 +14,7 @@ const Profile = () => {
       navigate("/login");
     } else {
       axios
-        .get("http://localhost:5000/api/users/profile", {
+        .get("http://localhost:8080/user/api/users/profile", {
             
           headers: { Authorization: `Bearer ${token}` },
         })

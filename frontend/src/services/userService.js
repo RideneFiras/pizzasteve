@@ -1,7 +1,7 @@
 import API_BASE_URL from "../config";
 
 export const loginUser = async (email, password) => {
-  const response = await fetch(`${API_BASE_URL}/users/login`, {
+  const response = await fetch(`${API_BASE_URL}/user/api/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export const loginUser = async (email, password) => {
 };
 
 export const registerUser = async (userData) => {
-  const response = await fetch(`${API_BASE_URL}/users/register`, {
+  const response = await fetch(`${API_BASE_URL}/user/api/users/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export const getUserProfile = async () => {
     throw new Error("No token found");
   }
 
-  const response = await fetch(`${API_BASE_URL}/users/profile`, {
+  const response = await fetch(`${API_BASE_URL}/user/api/users/profile`, {
     headers: {
       Authorization: token,
     },

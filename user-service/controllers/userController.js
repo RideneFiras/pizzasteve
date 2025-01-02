@@ -70,3 +70,27 @@ exports.loginUser = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
+
+  exports.getAllUsers = async (req, res) => {
+    try {
+      const users = await User.find().select('-password'); // Exclude passwords
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching users', error: error.message });
+    }
+  };
+
+  exports.deleteUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const user = await User.findByIdAndDelete(id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json({ message: 'User deleted successfully', user });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+  };
+
+  

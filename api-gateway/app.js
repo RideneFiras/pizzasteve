@@ -1,11 +1,17 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
-const port = 6000;
+const port = 8080;
 
 // Address of the Discovery Server
 const discoveryServerUrl = 'http://localhost:4000/services';
-
+// Enable CORS for all routes
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow only your frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+}));
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -16,21 +22,19 @@ app.use(async (req, res, next) => {
         const response = await axios.get(discoveryServerUrl);
         const services = response.data;
 
-        // Check which service is targeted
-        if (req.path.startsWith('/service1')) {
-            req.targetService = services.find(service => service.name === 'service1');
-            console.log(req.targetService)
-        } else if (req.path.startsWith('/service2')) {
-            req.targetService = services.find(service => service.name === 'service2');
-        }
+        // Extract the service name from the request path (e.g., "/product-service/api/...").
+        const [_, serviceName, ...servicePath] = req.path.split('/');
 
-        // If target service is found, set its URL
-        if (req.targetService) {
-            req.targetServiceUrl = `${req.targetService.address}:${req.targetService.port}`;
-            console.log( req.targetServiceUrl)
+        // Find the target service in the list
+        const targetService = services.find(service => service.name === serviceName);
+
+        if (targetService) {
+            // Construct the target service URL
+            req.targetServiceUrl = `${targetService.address}:${targetService.port}/${servicePath.join('/')}`;
             next();
         } else {
-            res.status(404).send({ message: 'Microservice introuvable' });
+            // If the service is not found, return a 404 error
+            res.status(404).send({ message: `Service "${serviceName}" introuvable` });
         }
     } catch (error) {
         res.status(500).send({ message: 'Erreur de communication avec le serveur de découverte' });
@@ -40,15 +44,26 @@ app.use(async (req, res, next) => {
 // Proxy requests to the target service
 app.use(async (req, res) => {
     try {
-        console.log(`${req.targetServiceUrl}${req.originalUrl.replace(/^\/service[1-2]/, '')}`)
         const response = await axios({
             method: req.method, // Preserve the HTTP method
-            url: `${req.targetServiceUrl}${req.originalUrl.replace(/^\/service[1-2]/, '')}`,
+            url: req.targetServiceUrl, // Route to the target service URL
             data: req.body, // Forward the request body
+            headers: {
+                ...req.headers, // Forward all headers
+                'Content-Type': 'application/json', // Ensure content type is JSON
+                'Content-Length': Buffer.byteLength(JSON.stringify(req.body)), // Correct content length
+            },
+            timeout: 15000, // 15 seconds timeout
         });
-        res.send(response.data);
+
+        res.status(response.status).send(response.data);
     } catch (error) {
-        res.status(500).send({ message: 'Erreur lors de la communication avec le microservice' });
+        if (error.response) {
+            // Return the error from the target service
+            res.status(error.response.status).send(error.response.data);
+        } else {
+            res.status(500).send({ message: 'Erreur lors de la communication avec le microservice' });
+        }
     }
 });
 

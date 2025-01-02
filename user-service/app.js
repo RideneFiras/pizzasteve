@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 
 // Load environment variables
 dotenv.config();
+process.env.JWT_SECRET = 'your-secret-key';
 
 // Connect to MongoDB
 connectDB();
