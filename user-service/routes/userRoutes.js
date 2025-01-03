@@ -1,6 +1,7 @@
 const express = require('express');
 const { registerUser, loginUser, getProfile, getAllUsers, deleteUser } = require('../controllers/userController'); // Add getAllUsers and deleteUser
-const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware'); // Destructure both middlewares
+const { authMiddleware, isAdmin } = require('auth-middleware');
+ // Destructure both middlewares
 
 const router = express.Router();
 

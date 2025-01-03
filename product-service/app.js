@@ -12,7 +12,7 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5020;
-
+process.env.JWT_SECRET = 'your-secret-key';
 // Middleware
 app.use(express.json());
 app.use(cors());

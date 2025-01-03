@@ -1,0 +1,14 @@
+{
+  "name": "auth-middleware",
+  "version": "1.0.0",
+  "main": "AuthMiddleware.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Firas",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}
