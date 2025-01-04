@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/auth";
 import axios from "axios";
+import MenuOverlay from "../../components/MenuOverlay";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -15,13 +16,13 @@ const Profile = () => {
     } else {
       axios
         .get("http://localhost:8080/user/api/users/profile", {
-            
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           console.log("Profile Data:", response.data); // Log response data
           setProfile(response.data);
           setError("");
+          localStorage.setItem("role", response.data.role);
         })
         .catch((err) => {
           console.error("Error fetching profile:", err); // Log error
@@ -29,6 +30,7 @@ const Profile = () => {
         });
     }
   }, [navigate]);
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -36,6 +38,9 @@ const Profile = () => {
 
   return (
     <div className="container mt-5">
+      {/* MenuOverlay Component */}
+      {profile && <MenuOverlay role={profile.role} />}
+
       <div
         className="card mx-auto"
         style={{

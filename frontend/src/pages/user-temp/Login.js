@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginUser } from "../../services/userService";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/global.css';
@@ -11,17 +11,29 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await loginUser(email, password);
+      const response = await axios.post("http://localhost:8080/user/api/users/login", {
+        email,
+        password,
+      });
+      const { token, role } = response.data;
+
       setMessage("Login successful!");
-      localStorage.setItem("token", data.token); // Save token in localStorage
+      localStorage.setItem("token", token); // Save token in localStorage
+      localStorage.setItem("role", role); // Save role in localStorage
+
       setTimeout(() => {
-        navigate("/profile"); // Redirect to profile page
+        if (role === "admin") {
+          navigate("/admin/view-products"); // Redirect admin to admin products page
+        } else {
+          navigate("/profile"); // Redirect user to profile page
+        }
       }, 1000); // Add delay for user feedback
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Failed to login. Please try again.");
     }
   };
 

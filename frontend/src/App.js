@@ -4,6 +4,8 @@ import Login from "./pages/user-temp/Login";
 import Register from "./pages/user-temp/Register";
 import Profile from "./pages/user-temp/profile";
 import PrivateRoute from "./components/PrivateRoute";
+import ViewProducts from './pages/user-temp/ViewProducts';
+import AdminViewProducts from './pages/admin-temp/AdminViewProducts';
 import './styles/global.css';
 
 const App = () => {
@@ -13,8 +15,13 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* Wrap /profile with PrivateRoute */}
           <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+          <Route path="/products" element={<PrivateRoute element={<ViewProducts />} />} />
+          <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+  <Route
+    path="/admin/view-products"
+    element={<PrivateRoute element={<AdminViewProducts />} requiredRole="admin" />}
+  />
         </Routes>
       </Router>
     </div>

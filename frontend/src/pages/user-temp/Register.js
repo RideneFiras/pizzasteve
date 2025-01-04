@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { registerUser } from "../../services/userService";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/global.css';
 
@@ -11,15 +11,24 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser({ firstName, lastName, email, password });
-      setMessage("Registration successful! Please log in.");
+      await axios.post("http://localhost:8080/user/api/users/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      setMessage("Registration successful! Redirecting to login...");
       setError("");
+      setTimeout(() => {
+        navigate("/login"); // Redirect to login after success
+      }, 1500); // Delay for user feedback
     } catch (err) {
-      setError(err.message || "Failed to register");
+      setError(err.response?.data?.message || "Failed to register");
       setMessage("");
     }
   };
