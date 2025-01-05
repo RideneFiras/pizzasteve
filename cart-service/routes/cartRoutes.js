@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authMiddleware } = require('auth-middleware'); // Use your existing middleware package
 const {
   addProductToCart,
   getCartDetails,
@@ -7,12 +8,12 @@ const {
 } = require('../controllers/cartController');
 
 // Add product to cart
-router.post('/add', addProductToCart);
+router.post('/add', authMiddleware, addProductToCart);
 
-// Get cart details by userId
-router.get('/:userId', getCartDetails);
+// Get cart details
+router.get('/', authMiddleware, getCartDetails);
 
 // Remove product from cart
-router.delete('/remove', removeProductFromCart);
+router.delete('/remove', authMiddleware, removeProductFromCart);
 
 module.exports = router;

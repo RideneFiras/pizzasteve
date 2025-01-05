@@ -13,6 +13,7 @@ const PrivateRoute = ({ element: Component, requiredRole }) => {
 
   // If a requiredRole is specified, check if the user's role matches
   if (requiredRole && role !== requiredRole) {
+    
     return <Navigate to="/profile" />;
   }
 

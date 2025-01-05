@@ -1,27 +1,30 @@
 const Cart = require('../models/Cart');
+const axios = require('axios'); // For calling the Product Service
 
 // Add a product to the cart
 exports.addProductToCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { productId, quantity } = req.body;
+  const userId = req.user.id; // Extracted from token
 
   try {
+    // Fetch product details from the Product Service
+    const productResponse = await axios.get(`http://localhost:8080/product-service/api/products/${productId}`);
+    const { name: productName, price } = productResponse.data;
+
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      // If no cart exists for the user, create a new one
-      cart = new Cart({ userId, products: [{ productId, quantity }] });
+      cart = new Cart({
+        userId,
+        products: [{ productId, productName, price, quantity }],
+      });
     } else {
-      // Check if the product already exists in the cart
-      const existingProductIndex = cart.products.findIndex(
-        (item) => item.productId === productId
-      );
+      const existingProductIndex = cart.products.findIndex((item) => item.productId === productId);
 
       if (existingProductIndex > -1) {
-        // Update the quantity if product exists
         cart.products[existingProductIndex].quantity += quantity || 1;
       } else {
-        // Add new product to the cart
-        cart.products.push({ productId, quantity });
+        cart.products.push({ productId, productName, price, quantity });
       }
     }
 
@@ -32,9 +35,9 @@ exports.addProductToCart = async (req, res) => {
   }
 };
 
-// Get cart details by user ID
+// Get cart details
 exports.getCartDetails = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
 
   try {
     const cart = await Cart.findOne({ userId });
@@ -51,7 +54,8 @@ exports.getCartDetails = async (req, res) => {
 
 // Remove a product from the cart
 exports.removeProductFromCart = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { productId } = req.body;
+  const userId = req.user.id;
 
   try {
     const cart = await Cart.findOne({ userId });
@@ -60,7 +64,6 @@ exports.removeProductFromCart = async (req, res) => {
       return res.status(404).json({ message: 'Cart not found for this user' });
     }
 
-    // Filter out the product to be removed
     cart.products = cart.products.filter((item) => item.productId !== productId);
 
     await cart.save();

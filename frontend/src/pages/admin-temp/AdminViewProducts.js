@@ -62,7 +62,7 @@ const AdminViewProducts = () => {
           <div className="row">
             {products.map((product) => (
               <div className="col-md-4 mb-4" key={product._id}>
-                <div className="card">
+                <div className="card bg-secondary text-white">
                   <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">
@@ -70,7 +70,7 @@ const AdminViewProducts = () => {
                     </p>
                     <p className="card-text">Price: ${product.price}</p>
                     <p className="card-text">Category: {product.category}</p>
-                    <p className="card-text">Stock: {product.stock}</p>
+                   
                     <div className="d-flex justify-content-between">
                       <button
                         className="btn btn-warning"

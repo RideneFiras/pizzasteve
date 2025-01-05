@@ -68,28 +68,26 @@ const ViewProducts = () => {
             />
           </div>
         </div>
-
         {filteredProducts.length > 0 ? (
-          <div className="row">
-            {filteredProducts.map((product) => (
-              <div className="col-md-4 mb-4" key={product._id}>
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                    <p className="card-text">
-                      {product.description || "No description available."}
-                    </p>
-                    <p className="card-text">Price: ${product.price}</p>
-                    <p className="card-text">Category: {product.category}</p>
-                    
-                  </div>
-                </div>
-              </div>
-            ))}
+  <div className="row bg">
+    {filteredProducts.map((product) => (
+      <div className="col-md-4 mb-4" key={product._id}>
+    <div className="card bg-muted text-dark">{/* Add bg-dark and text-white classes */}
+          <div className="card-body">
+            <h5 className="card-title">{product.name}</h5>
+            <p className="card-text">
+              {product.description || "No description available."}
+            </p>
+            <p className="card-text">Price: ${product.price}</p>
+            <p className="card-text">Category: {product.category}</p>
           </div>
-        ) : (
-          <div className="text-center text-muted mt-4">No products found.</div>
-        )}
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-center">No products available.</p>
+)}
       </div>
     </div>
   );

@@ -17,8 +17,9 @@ COPY . .
 EXPOSE 5000
 
 # Set environment variables directly (since no .env file is used)
+# NOTE: Replace `mongodb://user-service-db:27017` with your MongoDB URI if using Docker Compose
 ENV JWT_SECRET=your-secret-key
-ENV MONGO_URI=mongodb://localhost:27017/petepizza-users
+ENV MONGO_URI=mongodb://root:example@user-service-db:27017/petepizza-users?authSource=admin
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["node", "app.js"]
