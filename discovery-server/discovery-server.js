@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const PORT = 4000;
+const PORT = process.env.PORT || 8761;
 
 // Array to store registered services
 let services = [];
