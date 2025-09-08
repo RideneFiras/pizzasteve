@@ -1,0 +1,16 @@
+{
+  "name": "discovery-server",
+  "version": "1.0.0",
+  "main": "discovery-server.js",
+  "scripts": {
+    "start": "node discovery-server.js",
+    "dev": "nodemon discovery-server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -7,6 +7,15 @@ services:
     ports:
       - "8761:8761"
 
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+    depends_on:
+      - discovery-server
+    ports:
+      - "8080:8080"
+
   # User Service
   user-service:
     build:
@@ -139,3 +148,14 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - "27024:27017"
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
