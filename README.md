@@ -2,6 +2,20 @@
 
 PizzaSteve is a full-stack pizza ordering application built with a microservices architecture. It provides a complete solution for online pizza ordering with user management, product catalog, cart functionality, inventory management, order processing, payment handling, and real-time notifications.
 
+## ✨ Features
+
+- 🔐 **User Authentication**: Secure JWT-based login and registration
+- 🍕 **Product Catalog**: Browse pizza menu with categories and pricing
+- 🛒 **Shopping Cart**: Add, remove, and manage cart items
+- 📦 **Inventory Management**: Real-time stock tracking
+- 📋 **Order Processing**: Complete order lifecycle management
+- 💳 **Payment Integration**: Secure payment processing
+- 📧 **Notifications**: Email and status updates
+- 🌐 **Responsive Frontend**: Modern React-based user interface
+- 🐳 **Docker Support**: One-command deployment with Docker Compose
+- 🔄 **Service Discovery**: Automatic service registration and discovery
+- 🌟 **API Gateway**: Centralized request routing and load balancing
+
 ![System Architecture](starting.png)
 
 ## 📋 Table of Contents
@@ -339,6 +353,25 @@ curl -X POST http://localhost:8080/user-service/register \
 - Add tests for new features
 - Update documentation as needed
 - Ensure all services work together properly
+
+### Project Structure
+
+```
+pizzasteve/
+├── api-gateway/           # API Gateway service
+├── cart-service/          # Shopping cart microservice
+├── discovery-server/      # Service registry
+├── frontend/             # React web application
+├── inventory-service/    # Stock management service
+├── notification-service/ # Email/notification service
+├── order-service/        # Order processing service
+├── payement-service/     # Payment processing service
+├── product-service/      # Product catalog service
+├── user-service/         # User authentication service
+├── Auth-Middleware/      # Shared authentication middleware
+├── docker-compose.yml    # Docker services configuration
+└── README.md            # Project documentation
+```
 
 ## 📝 License
 
